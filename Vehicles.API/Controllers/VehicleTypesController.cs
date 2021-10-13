@@ -25,23 +25,7 @@ namespace Vehicles.API.Controllers
             return View(await _context.VehicleTypes.ToListAsync());
         }
 
-        // GET: VehicleTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vehicleType = await _context.VehicleTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicleType == null)
-            {
-                return NotFound();
-            }
-
-            return View(vehicleType);
-        }
+        
 
         // GET: VehicleTypes/Create
         public IActionResult Create()
@@ -58,9 +42,28 @@ namespace Vehicles.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vehicleType);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(vehicleType);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Vehículo repetido");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                   
+                }
+                catch(Exception e)
+                {
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return View(vehicleType);
         }
