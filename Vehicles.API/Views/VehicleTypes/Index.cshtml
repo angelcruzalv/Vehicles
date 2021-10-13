@@ -9,7 +9,7 @@
     <a asp-action="Create" class="btn btn-primary">Nuevo</a>
 </p>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Tipos de Vehiculo</h3>
@@ -44,10 +44,14 @@
     </div>
 </div>
 
+<partial name="_DeleteDialog" />
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script src="~/js/deleteDialog.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -61,6 +65,7 @@
                 ]
             });
             // Delete item
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/VehicleTypes/Delete/', false);
         });
     </script>
 }
