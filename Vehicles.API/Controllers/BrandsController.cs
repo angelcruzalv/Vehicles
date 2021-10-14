@@ -8,11 +8,11 @@ using Vehicles.API.Data.Entities;
 
 namespace Vehicles.API.Controllers
 {
-    public class VehicleTypesController : Controller
+    public class BrandsController : Controller
     {
         private readonly DataContext _context;
 
-        public VehicleTypesController(DataContext context)
+        public BrandsController(DataContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace Vehicles.API.Controllers
         // GET: VehicleTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.VehicleTypes.ToListAsync());
+            return View(await _context.Brands.ToListAsync());
         }
 
 
@@ -36,13 +36,13 @@ namespace Vehicles.API.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description")] VehicleType vehicleType)
+        public async Task<IActionResult> Create([Bind("Id,Description")] Brand brand)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Add(vehicleType);
+                    _context.Add(brand);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -63,7 +63,7 @@ namespace Vehicles.API.Controllers
                     ModelState.AddModelError(string.Empty, e.Message);
                 }
             }
-            return View(vehicleType);
+            return View(brand);
         }
 
         // GET: VehicleTypes/Edit/5
